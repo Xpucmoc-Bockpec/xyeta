@@ -1,0 +1,11 @@
+{
+  "name": "jestko",
+  "version": "1.0.0",
+  "description": "卐",
+  "main": "index.js",
+  "author": "XALTYPA",
+  "license": "ISC",
+  "dependencies": {
+    "vk-call": "^1.0.0"
+  }
+}
