@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "пошел нахуй",
   "main": "index.js",
-  "author": "KBAPTII/\ATA",
+  "author": "KBAPTII/\\ATA",
   "license": "ISC",
   "dependencies": {
     "steam": "^1.4.0"
