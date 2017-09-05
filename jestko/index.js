@@ -9,7 +9,7 @@ var api = new VK({
 })
 // https://oauth.vk.com/authorize?client_id=4531754&display=mobile&redirect_uri=blank.html&scope=messages,offline&response_type=token
 
-var triggers = [
+const triggers = [
 	/пизд((е|e)ц|(a|а))/gi,
 	/(е|e)б(a|а)ть/gi,
 	/(о|o|а|a)(x|х)(y|у)(е|e)ть/gi,
@@ -26,9 +26,9 @@ var triggers = [
 	/п(р|p)ик(о|o)л/gi
 ]
 
-var ignored = [202905427, 2000000056]
+const ignored = [202905427, 410965726, 2000000056, 2000000042]
 
-var responces = [
+const responces = [
 	"doc202905427_449936122",
 	"doc202905427_449936332",
 	"doc202905427_449936338",
@@ -60,42 +60,37 @@ function getMessages(longpoll) {
 	})
 }
 
-isHard()
 
-function isHard() {
+void function isHard() {
 	getLongPoolServer().then(response => {
-		getMessages(response).then(response => {
-			ts = response.ts
-			for (var i in response.updates) {
-				var event = response.updates[i][0],
-					flags = response.updates[i][2],
-					user_id = response.updates[i][3],
-					message = response.updates[i][5]
+		return getMessages(response)
+	})
+	.then(response => {
+		ts = response.ts
+		for (var i in response.updates) {
+			var event = response.updates[i][0],
+				flags = response.updates[i][2],
+				user_id = response.updates[i][3],
+				message = response.updates[i][5]
 
-				console.log(user_id)
-				if (!isIgnoredUser(user_id)) {
-					if (event == 4 && !(flags & 2)) {
-						for (var j in triggers) {
-							if (!!message.match(triggers[j])) {
-								Affirmative(user_id)
-								break
-							}
+			if (!isIgnoredUser(user_id)) {
+				if (event == 4 && !(flags & 2)) {
+					for (var j in triggers) {
+						if (!!message.match(triggers[j])) {
+							Affirmative(user_id)
+							break
 						}
 					}
 				}
 			}
-			isHard()
-		})
-		.catch(error => {
-			console.error(error)
-			isHard()
-		})
+		}
+		isHard()
 	})
 	.catch(error => {
 		console.error(error)
 		isHard()
 	})
-}
+}()
 
 function isIgnoredUser(user_id) {
 	return ignored.indexOf(user_id) == -1 ? false : true
